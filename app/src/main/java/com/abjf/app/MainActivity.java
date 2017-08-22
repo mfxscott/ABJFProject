@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.abjf.app.entity.UserInfoEntity;
 import com.abjf.app.entity.book;
 import com.abjf.app.http.httputil.RetroFitHelper;
 import com.abjf.app.http.service.UserService;
+import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Router;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -17,7 +20,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
-private TextView tv;
+    private TextView tv;
+    public Router router;
+     ViewGroup viewGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,12 @@ private TextView tv;
 //                ARouter.getInstance().build("/activity/TestLoginActivity").navigation();
             }
         });
+        viewGroup = (ViewGroup) findViewById(R.id.controller_container);
+//        ButterKnife.bind(this);
+        router = Conductor.attachRouter(this, viewGroup, savedInstanceState);
+        if (!router.hasRootController()) {
+//            router.setRoot(RouterTransaction.with(new SplashController()).tag("splash"));
+        }
         getData();
     }
     private void getData(){
